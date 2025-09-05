@@ -20,18 +20,14 @@ export async function POST(request: NextRequest) {
           role: 'system',
           content: `You are an intelligent text completion assistant. Given the text before and after the cursor, provide a natural continuation that fits the context.
 
-${context ? `Additional Context: ${context}` : ''}
-
-${instructions ? `Special Instructions: ${instructions}` : ''}
-
 Rules:
 - Provide only the completion text, no explanations
 - Keep completions concise and relevant (1-3 sentences max)
 - Match the writing style and tone of the existing text
 - If the text appears to be code, provide appropriate code completions
 - If the text is a list, continue the list format
-- Follow any special instructions provided above
-- If context is provided, use it to inform your completion
+- Follow any special instructions provided in the user message
+- If context is provided in the user message, use it to inform your completion
 - If unsure, provide a brief, helpful continuation`,
           providerOptions: {
             anthropic: {
@@ -43,7 +39,7 @@ Rules:
           role: 'user',
           content: `Complete this text naturally:
 
-Text before cursor: "${beforeCursor}"
+${context ? `Additional Context: ${context}\n\n` : ''}${instructions ? `Special Instructions: ${instructions}\n\n` : ''}Text before cursor: "${beforeCursor}"
 Text after cursor: "${afterCursor}"
 
 Provide only the completion text that should be inserted at the cursor position:`

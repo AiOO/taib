@@ -32,32 +32,32 @@ test('should show AI suggestion when typing in text editor', async ({ page }) =>
 test('should show context panel when settings button is clicked', async ({ page }) => {
   await page.goto(BASE_URL);
 
-  const settingsButton = page.getByText('Context & Instructions');
+  const settingsButton = page.getByText('컨텍스트 & 지시사항');
   await expect(settingsButton).toBeVisible();
 
   await settingsButton.click();
 
-  await expect(page.getByText('Context (상황 설명)')).toBeVisible();
-  await expect(page.getByText('Instructions (작성 지시사항)')).toBeVisible();
+  await expect(page.getByText('컨텍스트 (상황 설명)')).toBeVisible();
+  await expect(page.getByText('지시사항 (작성 가이드)')).toBeVisible();
 });
 
 test('should hide context panel when settings button is clicked again', async ({ page }) => {
   await page.goto(BASE_URL);
 
-  const settingsButton = page.getByText('Context & Instructions');
+  const settingsButton = page.getByText('컨텍스트 & 지시사항');
   await settingsButton.click();
 
-  await expect(page.getByText('Context (상황 설명)')).toBeVisible();
+  await expect(page.getByText('컨텍스트 (상황 설명)')).toBeVisible();
 
   await settingsButton.click();
 
-  await expect(page.getByText('Context (상황 설명)')).not.toBeVisible();
+  await expect(page.getByText('컨텍스트 (상황 설명)')).not.toBeVisible();
 });
 
 test('should allow entering context and instructions', async ({ page }) => {
   await page.goto(BASE_URL);
 
-  const settingsButton = page.getByText('Context & Instructions');
+  const settingsButton = page.getByText('컨텍스트 & 지시사항');
   await settingsButton.click();
 
   const contextTextarea = page.getByPlaceholder(/이 텍스트는 블로그 포스트입니다/);
@@ -85,7 +85,7 @@ test('should send context and instructions in API request', async ({ page }) => 
 
   await page.goto(BASE_URL);
 
-  const settingsButton = page.getByText('Context & Instructions');
+  const settingsButton = page.getByText('컨텍스트 & 지시사항');
   await settingsButton.click();
 
   const contextTextarea = page.getByPlaceholder(/이 텍스트는 블로그 포스트입니다/);

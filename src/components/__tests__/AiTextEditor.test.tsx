@@ -15,7 +15,7 @@ describe('AiTextEditor', () => {
   it('renders context panel toggle button', () => {
     render(<AiTextEditor />);
 
-    const toggleButton = screen.getByText('Context & Instructions');
+    const toggleButton = screen.getByText('컨텍스트 & 지시사항');
     expect(toggleButton).toBeInTheDocument();
   });
 
@@ -23,18 +23,18 @@ describe('AiTextEditor', () => {
     const user = userEvent.setup();
     render(<AiTextEditor />);
 
-    const toggleButton = screen.getByText('Context & Instructions');
+    const toggleButton = screen.getByText('컨텍스트 & 지시사항');
     await user.click(toggleButton);
 
-    expect(screen.getByText('Context (상황 설명)')).toBeInTheDocument();
-    expect(screen.getByText('Instructions (작성 지시사항)')).toBeInTheDocument();
+    expect(screen.getByText('컨텍스트 (상황 설명)')).toBeInTheDocument();
+    expect(screen.getByText('지시사항 (작성 가이드)')).toBeInTheDocument();
   });
 
   it('allows entering context and instructions', async () => {
     const user = userEvent.setup();
     render(<AiTextEditor />);
 
-    const toggleButton = screen.getByText('Context & Instructions');
+    const toggleButton = screen.getByText('컨텍스트 & 지시사항');
     await user.click(toggleButton);
 
     const contextTextarea = screen.getByPlaceholderText(/이 텍스트는 블로그 포스트입니다/);
@@ -51,13 +51,13 @@ describe('AiTextEditor', () => {
     const user = userEvent.setup();
     render(<AiTextEditor />);
 
-    const toggleButton = screen.getByText('Context & Instructions');
+    const toggleButton = screen.getByText('컨텍스트 & 지시사항');
     await user.click(toggleButton);
 
-    expect(screen.getByText('Context (상황 설명)')).toBeInTheDocument();
+    expect(screen.getByText('컨텍스트 (상황 설명)')).toBeInTheDocument();
 
     await user.click(toggleButton);
 
-    expect(screen.queryByText('Context (상황 설명)')).not.toBeInTheDocument();
+    expect(screen.queryByText('컨텍스트 (상황 설명)')).not.toBeInTheDocument();
   });
 });

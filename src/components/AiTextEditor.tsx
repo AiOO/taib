@@ -135,13 +135,13 @@ export function AiTextEditor() {
   return (
     <div className="space-y-4 relative">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-gray-800">AI Text Editor</h2>
+        <h2 className="text-xl font-semibold text-gray-800">AI 텍스트 에디터</h2>
         <button
           onClick={() => setShowContextPanel(!showContextPanel)}
           className="flex items-center space-x-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
         >
           <Settings className="w-4 h-4" />
-          <span>Context & Instructions</span>
+          <span>컨텍스트 & 지시사항</span>
           {showContextPanel ? (
             <ChevronDown className="w-4 h-4" />
           ) : (
@@ -154,7 +154,7 @@ export function AiTextEditor() {
         <div className="bg-gray-50 p-4 rounded-lg border space-y-4 mb-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Context (상황 설명)
+              컨텍스트 (상황 설명)
             </label>
             <textarea
               value={context}
@@ -165,7 +165,7 @@ export function AiTextEditor() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Instructions (작성 지시사항)
+              지시사항 (작성 가이드)
             </label>
             <textarea
               value={instructions}
