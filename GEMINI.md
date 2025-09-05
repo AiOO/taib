@@ -33,7 +33,9 @@ You can run the following commands from the project root:
 │       │   └── AiTextEditor.test.tsx # Tests for AiTextEditor
 │       ├── AiTextEditor.tsx      # Core AI text editor component
 │       └── ui/
-│           └── SuggestiveTextField.tsx # Reusable suggestion text field
+│           ├── __tests__/
+│           │   └── CodeMirrorEditor.test.tsx # Tests for CodeMirrorEditor
+│           └── CodeMirrorEditor.tsx # Reusable CodeMirror editor component
 ├── jest.config.mjs      # Jest configuration
 ├── jest.setup.mjs       # Jest setup file
 ├── next.config.ts       # Next.js configuration
@@ -45,7 +47,7 @@ You can run the following commands from the project root:
 
 - **`AiTextEditor.tsx`**: The main feature of this application. It's a text editor that fetches and displays AI-powered suggestions in real-time as the user types. It handles user input, loading states, and suggestion lifecycle (acceptance/rejection).
 
-- **`SuggestiveTextField.tsx`**: A reusable UI component that provides a `contenteditable` input field. It is designed to show inline text suggestions and is the core building block for the `AiTextEditor`.
+- **`CodeMirrorEditor.tsx`**: A reusable UI component that wraps the CodeMirror editor. It is responsible for displaying the text, handling user input, and showing inline text suggestions using CodeMirror's widget decoration feature.
 
 - **`/api/complete/route.ts`**: A Next.js API route that receives the current text and cursor position. It is responsible for communicating with an AI service to generate a relevant text completion and return it to the client.
 
@@ -53,6 +55,7 @@ You can run the following commands from the project root:
 
 This project uses **Jest** and **React Testing Library** for unit and component testing.
 
+- **Test Creation**: When adding a new component, a corresponding test file must be created to ensure its functionality is working as expected.
 - **Configuration**: Jest is configured in `jest.config.mjs` and `jest.setup.mjs` to work with Next.js, TypeScript, and path aliases.
 - **Test Location**: Test files are located alongside the components they test, inside `__tests__` directories (e.g., `src/components/__tests__`).
 
@@ -80,6 +83,7 @@ This project uses **Jest** and **React Testing Library** for unit and component 
 - `@ai-sdk/react`, `ai`: Vercel AI SDK for integrating AI features.
 - `@headlessui/react`: For UI components.
 - `lucide-react`: Icon library.
+- `@uiw/react-codemirror`, `@codemirror/state`, `@codemirror/view`: For CodeMirror editor.
 
 ### Development Dependencies
 - `jest`, `@testing-library/react`, `ts-jest`: For testing.
