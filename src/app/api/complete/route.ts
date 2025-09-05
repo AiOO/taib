@@ -4,7 +4,7 @@ import { createAnthropic } from '@ai-sdk/anthropic';
 
 export async function POST(request: NextRequest) {
   try {
-    const { text, cursorPos } = await request.json();
+    const { text, cursorPos, context, instructions } = await request.json();
 
     // Get context around cursor position
     const beforeCursor = text.slice(0, cursorPos);
@@ -20,12 +20,18 @@ export async function POST(request: NextRequest) {
           role: 'system',
           content: `You are an intelligent text completion assistant. Given the text before and after the cursor, provide a natural continuation that fits the context.
 
+${context ? `Additional Context: ${context}` : ''}
+
+${instructions ? `Special Instructions: ${instructions}` : ''}
+
 Rules:
 - Provide only the completion text, no explanations
 - Keep completions concise and relevant (1-3 sentences max)
 - Match the writing style and tone of the existing text
 - If the text appears to be code, provide appropriate code completions
 - If the text is a list, continue the list format
+- Follow any special instructions provided above
+- If context is provided, use it to inform your completion
 - If unsure, provide a brief, helpful continuation`,
           providerOptions: {
             anthropic: {

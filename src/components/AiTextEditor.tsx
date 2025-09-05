@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Settings, ChevronDown, ChevronRight } from 'lucide-react';
 import CodeMirrorEditor from '@/components/ui/CodeMirrorEditor';
 
 interface Suggestion {
@@ -16,6 +16,9 @@ export function AiTextEditor() {
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [cursorPos, setCursorPos] = useState(0);
+  const [context, setContext] = useState('');
+  const [instructions, setInstructions] = useState('');
+  const [showContextPanel, setShowContextPanel] = useState(false);
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -38,6 +41,8 @@ export function AiTextEditor() {
           body: JSON.stringify({
             text,
             cursorPos: cursorPosition,
+            context: context.trim() || undefined,
+            instructions: instructions.trim() || undefined,
           }),
         });
 
@@ -63,7 +68,7 @@ export function AiTextEditor() {
         setIsLoading(false);
       }
     },
-    [suggestion],
+    [suggestion, context, instructions],
   );
 
   useEffect(() => {
@@ -129,6 +134,49 @@ export function AiTextEditor() {
 
   return (
     <div className="space-y-4 relative">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-gray-800">AI Text Editor</h2>
+        <button
+          onClick={() => setShowContextPanel(!showContextPanel)}
+          className="flex items-center space-x-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+        >
+          <Settings className="w-4 h-4" />
+          <span>Context & Instructions</span>
+          {showContextPanel ? (
+            <ChevronDown className="w-4 h-4" />
+          ) : (
+            <ChevronRight className="w-4 h-4" />
+          )}
+        </button>
+      </div>
+
+      {showContextPanel && (
+        <div className="bg-gray-50 p-4 rounded-lg border space-y-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Context (상황 설명)
+            </label>
+            <textarea
+              value={context}
+              onChange={(e) => setContext(e.target.value)}
+              placeholder="예: 이 텍스트는 블로그 포스트입니다. 기술적인 주제를 다루며 초보자도 이해할 수 있도록 쉽게 설명하는 스타일입니다."
+              className="w-full h-20 p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Instructions (작성 지시사항)
+            </label>
+            <textarea
+              value={instructions}
+              onChange={(e) => setInstructions(e.target.value)}
+              placeholder="예: 친근하고 대화하는 톤으로 작성해주세요. 전문 용어를 사용할 때는 간단한 설명을 포함해주세요."
+              className="w-full h-20 p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+      )}
+
       <CodeMirrorEditor
         value={content}
         suggestion={suggestion?.text}
