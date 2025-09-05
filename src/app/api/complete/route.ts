@@ -15,7 +15,10 @@ export async function POST(request: NextRequest) {
 
     const { text: completion } = await generateText({
       model: anthropic('claude-3-5-haiku-20241022'),
-      system: `You are an intelligent text completion assistant. Given the text before and after the cursor, provide a natural continuation that fits the context. 
+      messages: [
+        {
+          role: 'system',
+          content: `You are an intelligent text completion assistant. Given the text before and after the cursor, provide a natural continuation that fits the context.
 
 Rules:
 - Provide only the completion text, no explanations
@@ -24,12 +27,22 @@ Rules:
 - If the text appears to be code, provide appropriate code completions
 - If the text is a list, continue the list format
 - If unsure, provide a brief, helpful continuation`,
-      prompt: `Complete this text naturally:
+          providerOptions: {
+            anthropic: {
+              cacheControl: { type: 'ephemeral' }
+            }
+          }
+        },
+        {
+          role: 'user',
+          content: `Complete this text naturally:
 
 Text before cursor: "${beforeCursor}"
 Text after cursor: "${afterCursor}"
 
-Provide only the completion text that should be inserted at the cursor position:`,
+Provide only the completion text that should be inserted at the cursor position:`
+        }
+      ],
       maxOutputTokens: 150,
     });
 
