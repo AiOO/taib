@@ -135,10 +135,10 @@ export function AiTextEditor() {
   return (
     <div className="space-y-4 relative">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-gray-800">AI 텍스트 에디터</h2>
+        <h2 className="text-xl font-semibold text-foreground">AI 텍스트 에디터</h2>
         <button
           onClick={() => setShowContextPanel(!showContextPanel)}
-          className="flex items-center space-x-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+          className="flex items-center space-x-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 rounded-lg transition-colors"
         >
           <Settings className="w-4 h-4" />
           <span>컨텍스트 & 지시사항</span>
@@ -151,27 +151,27 @@ export function AiTextEditor() {
       </div>
 
       {showContextPanel && (
-        <div className="bg-gray-50 p-4 rounded-lg border space-y-4 mb-4">
+        <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4 mb-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               컨텍스트 (상황 설명)
             </label>
             <textarea
               value={context}
               onChange={(e) => setContext(e.target.value)}
               placeholder="예: 이 텍스트는 블로그 포스트입니다. 기술적인 주제를 다루며 초보자도 이해할 수 있도록 쉽게 설명하는 스타일입니다."
-              className="w-full h-20 p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-20 p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 rounded-md resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               지시사항 (작성 가이드)
             </label>
             <textarea
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
               placeholder="예: 친근하고 대화하는 톤으로 작성해주세요. 전문 용어를 사용할 때는 간단한 설명을 포함해주세요."
-              className="w-full h-20 p-3 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-20 p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 rounded-md resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import {
   EditorView,
@@ -75,6 +75,19 @@ const suggestionField = StateField.define<DecorationSet>({
 function CodeMirrorEditor(props: CodeMirrorEditorProps) {
   const { value, suggestion, onChange, onCursorChange, onAcceptSuggestion } = props;
   const editorRef = useRef<{ view: EditorView } | null>(null);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDark(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsDark(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   useEffect(() => {
     if (editorRef.current) {
@@ -115,7 +128,7 @@ function CodeMirrorEditor(props: CodeMirrorEditorProps) {
           handleStateChange(viewUpdate.state);
         }
       }}
-      theme={oneDark}
+      theme={isDark ? oneDark : undefined}
       extensions={[suggestionField, EditorView.lineWrapping, customKeymap]}
       height="24rem" // h-96
       className="w-full h-96 p-4 font-mono text-sm rounded-md"
