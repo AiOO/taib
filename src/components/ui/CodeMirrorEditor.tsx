@@ -7,8 +7,9 @@ import {
   Decoration,
   DecorationSet,
   WidgetType,
+  keymap,
 } from '@codemirror/view';
-import { EditorState, StateField, StateEffect } from '@codemirror/state';
+import { EditorState, StateField, StateEffect, Prec } from '@codemirror/state';
 import { oneDark } from '@codemirror/theme-one-dark';
 
 class SuggestionWidget extends WidgetType {
@@ -38,6 +39,7 @@ interface CodeMirrorEditorProps {
   suggestion?: string | null;
   onChange: (value: string) => void;
   onCursorChange: (pos: number) => void;
+  onAcceptSuggestion?: () => void;
 }
 
 const setSuggestion = StateEffect.define<string | null>();
@@ -71,8 +73,8 @@ const suggestionField = StateField.define<DecorationSet>({
 });
 
 function CodeMirrorEditor(props: CodeMirrorEditorProps) {
-  const { value, suggestion, onChange, onCursorChange } = props;
-  const editorRef = useRef<any>();
+  const { value, suggestion, onChange, onCursorChange, onAcceptSuggestion } = props;
+  const editorRef = useRef<{ view: EditorView } | null>(null);
 
   useEffect(() => {
     if (editorRef.current) {
@@ -89,6 +91,20 @@ function CodeMirrorEditor(props: CodeMirrorEditorProps) {
     onCursorChange(state.selection.main.head);
   };
 
+  const customKeymap = Prec.highest(keymap.of([
+    {
+      key: 'Tab',
+      preventDefault: true,
+      run: () => {
+        if (suggestion && onAcceptSuggestion) {
+          onAcceptSuggestion();
+          return true;
+        }
+        return false;
+      },
+    },
+  ]));
+
   return (
     <CodeMirror
       ref={editorRef}
@@ -100,7 +116,7 @@ function CodeMirrorEditor(props: CodeMirrorEditorProps) {
         }
       }}
       theme={oneDark}
-      extensions={[suggestionField, EditorView.lineWrapping]}
+      extensions={[suggestionField, EditorView.lineWrapping, customKeymap]}
       height="24rem" // h-96
       className="w-full h-96 p-4 font-mono text-sm rounded-md"
     />

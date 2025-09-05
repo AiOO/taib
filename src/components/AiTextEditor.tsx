@@ -121,10 +121,8 @@ export function AiTextEditor() {
       }
     };
 
-    // @ts-ignore
     document.addEventListener('keydown', handleKeyDown);
     return () => {
-      // @ts-ignore
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [suggestion, acceptSuggestion]);
@@ -136,12 +134,22 @@ export function AiTextEditor() {
         suggestion={suggestion?.text}
         onChange={handleTextChange}
         onCursorChange={handleCursorChange}
+        onAcceptSuggestion={acceptSuggestion}
       />
 
       {isLoading && (
-        <div className="absolute top-4 right-4 flex items-center space-x-2 bg-blue-50 px-3 py-1 rounded-full">
+        <div className="absolute bottom-4 right-4 flex items-center space-x-2 bg-blue-50 px-3 py-1 rounded-full">
           <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
           <span className="text-sm text-blue-600">Getting suggestion...</span>
+        </div>
+      )}
+
+      {suggestion && !isLoading && (
+        <div className="absolute bottom-4 right-4 flex items-center space-x-2 bg-green-50 px-3 py-1 rounded-full">
+          <kbd className="px-2 py-1 text-xs bg-green-100 border border-green-300 rounded text-green-700">
+            Tab
+          </kbd>
+          <span className="text-sm text-green-700">to complete</span>
         </div>
       )}
     </div>

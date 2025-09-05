@@ -16,8 +16,7 @@ jest.mock('@uiw/react-codemirror', () => {
 
     const handleSelect = (event: React.SyntheticEvent<HTMLTextAreaElement>) => {
       const target = event.target as HTMLTextAreaElement;
-      // @ts-ignore
-      onUpdate({ state: { selection: { main: { head: target.selectionStart } } } });
+      onUpdate({ state: { selection: { main: { head: target.selectionStart || 0 } } } });
     };
 
     return (
@@ -45,9 +44,8 @@ describe('CodeMirrorEditor', () => {
       />,
     );
 
-    const editor = screen.getByTestId('codemirror-textarea');
+    const editor = screen.getByTestId('codemirror-textarea') as HTMLTextAreaElement;
     expect(editor).toBeInTheDocument();
-    // @ts-ignore
     expect(editor.value).toBe('Hello, World!');
   });
 
