@@ -46,6 +46,7 @@ function SuggestiveTextField(props: SuggestiveTextFieldProps): ReactElement {
     >
       <span
         ref={fieldRef}
+        role="textbox"
         contentEditable="plaintext-only"
         suppressContentEditableWarning
         data-suggestion={suggestion}
