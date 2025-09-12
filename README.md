@@ -1,4 +1,16 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Taib
+
+Type + Tab + AI = taib
+
+This is a simple web-based text editor powered by AI. It provides intelligent code completion suggestions as you type, helping you write code faster and more efficiently.
+
+## Features
+
+*   **AI-Powered Code Completion:** Get real-time code completion suggestions from an AI model.
+*   **Context-Aware Suggestions:** Provide context and instructions to the AI to get more relevant suggestions.
+*   **Tab to Complete:** Easily accept suggestions by pressing the `Tab` key.
+*   **Escape to Dismiss:** Dismiss suggestions with the `Escape` key.
+*   **Debounced Suggestions:** Suggestions are fetched automatically after a short period of inactivity.
 
 ## Getting Started
 
@@ -18,19 +30,27 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+*   [Next.js](https://nextjs.org/) - The React Framework for the Web
+*   [React](https://reactjs.org/) - A JavaScript library for building user interfaces
+*   [TypeScript](https://www.typescriptlang.org/) - A typed superset of JavaScript
+*   [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+*   [CodeMirror](https://codemirror.net/) - A versatile text editor implemented in JavaScript for the browser
+*   [AI SDK](https://sdk.vercel.ai/) - A library for building AI-powered applications
 
-To learn more about Next.js, take a look at the following resources:
+## Testing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project uses [Jest](https://jestjs.io/) for unit tests and [Playwright](https://playwright.dev/) for end-to-end tests.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To run the unit tests, use the following command:
 
-## Deploy on Vercel
+```bash
+npm test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To run the end-to-end tests, use the following command:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run test:e2e
+```
