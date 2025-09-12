@@ -11,7 +11,6 @@ This is a simple web-based text editor powered by AI. It provides intelligent co
 *   **Tab to Complete:** Easily accept suggestions by pressing the `Tab` key.
 *   **Escape to Dismiss:** Dismiss suggestions with the `Escape` key.
 *   **Debounced Suggestions:** Suggestions are fetched automatically after a short period of inactivity.
-*   **Built with CodeMirror:** A powerful and extensible code editor component.
 
 ## Getting Started
 
