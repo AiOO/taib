@@ -1,4 +1,3 @@
-
 import nextJest from 'next/jest.js'
 
 const createJestConfig = nextJest({
@@ -12,7 +11,6 @@ const config = {
   // Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.mjs'],
   testEnvironment: 'jest-environment-jsdom',
-  preset: 'ts-jest',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
@@ -24,4 +22,11 @@ const config = {
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-export default createJestConfig(config)
+export default async () => {
+  const jestConfig = await createJestConfig(config)();
+  jestConfig.transformIgnorePatterns = [
+    '/node_modules/(?!graphql-request|swr)',
+    ...jestConfig.transformIgnorePatterns.slice(1),
+  ];
+  return jestConfig;
+}
