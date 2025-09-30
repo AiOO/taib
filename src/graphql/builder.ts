@@ -24,5 +24,12 @@ export const builder = new SchemaBuilder<PothosTypes>({
   },
 });
 
-builder.queryType({});
+builder.queryType({
+  fields: (t) => ({
+    hello: t.string({
+      resolve: () => 'world',
+    }),
+  }),
+});
+
 builder.mutationType({});

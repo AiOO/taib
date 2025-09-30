@@ -21,6 +21,22 @@ const TextRef = builder.drizzleObject('textsTable', {
   }),
 });
 
+builder.queryField('users', (t) =>
+  t.drizzleField({
+    type: [UserRef],
+    args: {
+      limit: t.arg.int(),
+      offset: t.arg.int(),
+    },
+    resolve: async (query, _, { limit, offset }, { db }) =>
+      db.query.usersTable.findMany({
+        ...query(),
+        limit: limit ?? undefined,
+        offset: offset ?? undefined,
+      }),
+  }),
+);
+
 builder.mutationField('createUser', (t) =>
   t.field({
     type: UserRef,
@@ -37,3 +53,5 @@ builder.mutationField('createUser', (t) =>
 );
 
 export const schema = builder.toSchema();
+
+console.log(printSchema(schema));
