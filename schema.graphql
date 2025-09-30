@@ -1,0 +1,23 @@
+type Query {
+  getTextsByAuthorEmail(emailPattern: String): [Text!]
+  text(id: Int!): Text
+  texts: [Text!]
+  user(id: Int!): User
+  users: [User!]
+}
+
+type Text {
+  author: User
+  authorId: Int
+  content: String
+  context: String
+  id: ID
+  instructions: String
+}
+
+type User {
+  email: String
+  id: ID
+  name: String
+  texts: [Text!]
+}
