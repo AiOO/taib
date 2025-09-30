@@ -1,45 +1,34 @@
-import { builder } from './builder';
-import { generateText } from 'ai';
-import { createAnthropic } from '@ai-sdk/anthropic';
-import { printSchema } from 'graphql';
-import { usersTable } from '@/db/schema';
-import { User } from 'lucide-react';
+import { buildSchema } from 'drizzle-graphql';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLNonNull } from 'graphql';
+import * as schema from '@/db/schema';
 
-const UserRef = builder.drizzleObject('usersTable', {
-  name: 'User',
-  fields: (t) => ({
-    id: t.exposeID('id'),
-    name: t.exposeString('name'),
-    email: t.exposeString('email'),
-  }),
+const db = drizzle(process.env.DATABASE_URL!, { schema });
+
+// drizzle-graphql로 기본 스키마 생성
+const { entities } = buildSchema(db);
+
+// 커스텀 mutation 추가
+const MutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    createUser: {
+      type: entities.types.UsersItem,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        email: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (_, { name, email }) => {
+        const user: typeof schema.usersTable.$inferInsert = { name, email };
+        const users = await db.insert(schema.usersTable).values(user).returning();
+        return users[0];
+      },
+    },
+  },
 });
 
-const TextRef = builder.drizzleObject('textsTable', {
-  name: 'Text',
-  fields: (t) => ({
-    content: t.exposeString('content'),
-    context: t.exposeString('context'),
-    instructions: t.exposeString('instructions'),
-    author: t.relation('author'),
-  }),
+// 기존 자동 생성된 쿼리에 커스텀 mutation 추가
+export const graphqlSchema = new GraphQLSchema({
+  query: entities.queries.$Schema,
+  mutation: MutationType,
 });
-
-builder.mutationField('createUser', (t) =>
-  t.field({
-    type: UserRef,
-    args: {
-      name: t.arg.string({ required: true }),
-      email: t.arg.string({ required: true }),
-    },
-    resolve: async (_, { name, email }, { db }) => {
-      const user: typeof usersTable.$inferInsert = { name, email };
-      return { id: 1, name, email };
-      const users = await db.insert(usersTable).values(user).returning();
-      return users[0];
-    },
-  }),
-);
-
-export const schema = builder.toSchema();
-
-console.log(printSchema(schema));
